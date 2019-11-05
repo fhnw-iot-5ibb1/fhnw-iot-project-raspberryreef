@@ -1,9 +1,5 @@
 # IoT Engineering
-## Project MY_TEAM_PROJECT_TITLE
-
-> *Note: Do not work on this repository right away.*<br/>
-> *[Create your copy or join a team by clicking this GitHub Classroom link](https://classroom.github.com/g/gALXMYRD).*
-
+## Project RaspberryReef
 ## Introduction
 This project is part of the [IoT Engineering](../../../fhnw-iot) course.
 
@@ -14,8 +10,7 @@ This project is part of the [IoT Engineering](../../../fhnw-iot) course.
 * Both team members are able to explain the project.
 
 ### Team members
-* @MY_TEAM_PROJECT_GITHUB_USER_1, REAL_NAME_1
-* @MY_TEAM_PROJECT_GITHUB_USER_2, REAL_NAME_2
+* @jonathan-baettig & @jbaettig, Jonathan James Bättig
 
 ## Deliverables
 The following deliverables are mandatory.
