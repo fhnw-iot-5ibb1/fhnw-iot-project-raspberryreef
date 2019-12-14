@@ -5,13 +5,13 @@ const Relay = require('./Actuators/Relay');
 
 var ThingSpeakApi = new ThingSpeakRestApi('https://api.thingspeak.com/update.json', '909274', 'BG3OF4PS64WT3GOB');
 var TempSensor_Ground = new TempSensor('28-031622932eff', 3, 'field1');
-var TempSensor_Surface = new TempSensor('', 3, 'field2');               // TODO: ADD Sensor Number
-var WaterLevelSensor_ReefMin = new WaterLevelSensor(12, 'field3');
-var WaterLevelSensor_ReefMax = new WaterLevelSensor(13, 'field4');
-var WaterLevelSensor_RefillMin = new WaterLevelSensor(15, 'field5');
-var LedLamp_Left = new Relay(16, 'field6');
-var LedLamp_Right = new Relay(18, 'field7');
-var RefillPump = new Relay(22, 'field8');
+var TempSensor_Surface = new TempSensor('28-041621ea95ff', 3, 'field2');
+var WaterLevelSensor_ReefMin = new WaterLevelSensor(17, 'field3');
+var WaterLevelSensor_ReefMax = new WaterLevelSensor(18, 'field4');
+var WaterLevelSensor_RefillMin = new WaterLevelSensor(27, 'field5');
+var LedLamp_Left = new Relay(22, 'field6');
+var LedLamp_Right = new Relay(23, 'field7');
+var RefillPump = new Relay(24, 'field8');
 
 // TODO: Handle Lights...
 // TODO: Create Lights API availabel.
