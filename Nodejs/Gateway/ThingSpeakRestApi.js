@@ -26,12 +26,4 @@ module.exports = class ThingSpeakRestApi {
 
         xhr.send(data);
     }
-
-    readField(field) {
-
-    }
-
-    readFeed() {
-
-    }
 };
