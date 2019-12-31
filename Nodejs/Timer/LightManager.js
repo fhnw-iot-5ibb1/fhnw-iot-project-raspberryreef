@@ -25,7 +25,7 @@ module.exports = class LightManager {
     getTotalOnTime() {
         var _MS_PER_HOUR = 1000 * 60 * 60;
 
-        if (this.hasPause()) {
+        if (hasPause()) {
             return Math.floor((calculateReturnTime(this.sunrise) - calculateReturnTime(this.afternoonPauseStart)) / _MS_PER_HOUR) +
                 Math.floor((calculateReturnTime(this.afternoonPauseEnd) - calculateReturnTime(this.sunset)) / _MS_PER_HOUR);
         } else {
@@ -36,7 +36,7 @@ module.exports = class LightManager {
     getLightShouldBeOn() {
         var now = new Date();
 
-        if (this.hasPaus()) {
+        if (hasPaus()) {
             return now >= this.sunrise && now <= this.afternoonPauseStart || now >= this.afternoonPauseEnd && now <= this.sunset;
         } else {
             return now >= this.sunrise && now <= this.sunset;

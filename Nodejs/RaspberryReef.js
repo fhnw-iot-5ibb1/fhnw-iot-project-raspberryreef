@@ -22,9 +22,9 @@ var initialSunrise = new Date(initialDate.getFullYear, initialDate.getMonth, 10,
 var initialSunset = new Date(initialDate.getFullYear, initialDate.getMonth, 22, 0, 0, 0);
 var ledLightManager = new LightManager(initialSunrise, null, null, initialSunset);
 
-setInterval(handleLights(), 60000);             // Check the light every minute
-setInterval(checkWaterLevel(), 300000);         // Check Reef Water Level every 5 Minutes. Refill if needed.
-setInterval(sendTempSensorData(), 300000);      // Update ThingSpeak Temp Fields every 5 Minutes.
+setInterval(() => handleLights(), 60000);             // Check the light every minute
+setInterval(() => checkWaterLevel(), 300000);         // Check Reef Water Level every 5 Minutes. Refill if needed.
+setInterval(() => sendTempSensorData(), 300000);      // Update ThingSpeak Temp Fields every 5 Minutes.
 
 function handleLights() {
     var lightShouldBeOn = ledLightManager.getLightShouldBeOn();
