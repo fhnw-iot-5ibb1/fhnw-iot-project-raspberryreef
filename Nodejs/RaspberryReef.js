@@ -111,7 +111,7 @@ function startRefillProcess(refillInterval) {
 }
 
 function sendTempSensorData() {
-    console.log('Sending temp sensor data to Thingspeak...');
+    console.log('Sending temp sensor data to Thingspeak.');
     thingSpeakApi.writeField(tempSensor_Ground.getThingSpeakField(), tempSensor_Ground.getTemp());
     thingSpeakApi.writeField(tempSensor_Surface.getThingSpeakField(), tempSensor_Surface.getTemp());
     console.log('Temp sensor data was sent.');

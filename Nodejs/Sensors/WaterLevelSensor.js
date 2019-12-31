@@ -9,7 +9,7 @@ module.exports = class WaterLevelSensor {
 
     getState() {
         var value = this.sensor.readSync();
-        console.log('Got water level value of pin ' + this.gpioNumber + '. Value is ' + value);
+        console.log('Got water level value of pin ' + this.gpioNumber + '. Value is ' + value + '.');
             return value;
     }
 

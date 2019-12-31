@@ -51,6 +51,4 @@ module.exports = class LightManager {
         var now = new Date();
         return new Date(now.getFullYear(), now.getMonth(), now.getDate(), date.getHours(), date.getSeconds(), date.getMilliseconds())
     }
-
-    //TODO Update Functionality
 };

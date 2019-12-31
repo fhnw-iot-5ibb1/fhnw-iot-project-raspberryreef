@@ -10,13 +10,13 @@ module.exports = class Relay {
 
     setStateActive() {
         this.state = 1;
-        console.log('Activated relay at gpio pin ' + this.gpioNumber + '. Value is ' + this.state);
+        console.log('Activated relay at gpio pin ' + this.gpioNumber + '. Value is ' + this.state + '.');
         this.relay.writeSync(this.state);
     }
 
     setStateInactive() {
         this.state = 0;
-        console.log('Deactivated relay at gpio pin ' + this.gpioNumber + '. Value is ' + this.state);
+        console.log('Deactivated relay at gpio pin ' + this.gpioNumber + '. Value is ' + this.state + '.');
         this.relay.writeSync(this.state);
     }
 
