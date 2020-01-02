@@ -29,7 +29,7 @@ setInterval(() => sendTempSensorData(), 300000);      // Update ThingSpeak Temp 
 function handleLights() {
     var lightShouldBeOn = ledLightManager.getLightShouldBeOn();
     console.log('Should the lights be on? => ' + lightShouldBeOn);
-    var data = null;
+    var data = "";
 
     if (lightShouldBeOn && ledLamp_Left.getState() != 1) {
         console.log('Going to turn on the left lamp.');
@@ -44,14 +44,14 @@ function handleLights() {
     if (lightShouldBeOn && ledLamp_Right.getState() != 1) {
         console.log('Going to turn on the right lamp.');
         ledLamp_Right.setStateActive();
-        data = + "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
+        data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
     } else if (!lightShouldBeOn && ledLamp_Right.getState != 0) {
         console.log('Going to turn the right lamp.');
         ledLamp_Right.setStateInactive();
         data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
     }
 
-    if (data != null) {
+    if (data != "") {
         thingSpeakApi.postFields(data)
         .then((response) => {
             console.log('Lamp data was sent.');
@@ -88,7 +88,7 @@ function checkWaterLevel() {
 function startRefillProcess(refillInterval) {
     var reefMax = waterLevelSensor_ReefMax.getState();
     var refillMin = waterLevelSensor_RefillMin.getState();
-    var data = null;
+    var data = "";
 
     if (reefMax === 0 && refillMin === 0) {
         refillBucketEmpty = false;
@@ -123,7 +123,7 @@ function startRefillProcess(refillInterval) {
         clearInterval(refillInterval);
     }
 
-    if (data != null) {
+    if (data != "") {
         thingSpeakApi.postFields(data)
         .then((response) => {
             console.log('Refill sensor and actuator data was sent.');

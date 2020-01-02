@@ -9,6 +9,7 @@ module.exports = class ThingSpeakRestApi {
 
     async postFields(values) {
         var data = "api_key=" + this.writeKey + values;
+        console.log(values);
 
         const response = await fetch(this.url, {
             method: 'POST',
