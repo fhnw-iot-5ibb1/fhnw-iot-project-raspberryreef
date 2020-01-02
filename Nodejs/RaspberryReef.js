@@ -79,7 +79,9 @@ function checkWaterLevel() {
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
                 console.log('Refill bucket is empty! Send a tweet to the reef owner!');
-                twitterApi.sendDirectMessageEmptyBucket(1125735237009510400);
+                twitterApi.sendDirectMessageEmptyBucket(1125735237009510400)
+                    .then(results => { console.log("results", results); })
+                    .catch(console.error);
             }
         }
     }
@@ -107,7 +109,9 @@ function startRefillProcess(refillInterval) {
                 data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
                 data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
                 console.log('Refill bucket is empty! Send a tweet to the reef owner!');
-                twitterApi.sendDirectMessageEmptyBucket(1125735237009510400);
+                twitterApi.sendDirectMessageEmptyBucket(1125735237009510400)
+                    .then(results => { console.log("results", results); })
+                    .catch(console.error);
             }
         }
         clearInterval(refillInterval);

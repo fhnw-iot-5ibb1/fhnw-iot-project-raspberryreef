@@ -9,7 +9,7 @@ module.exports = class TwitterApi {
         this.tokenSecret = tokenSecret;
     }
 
-    sendDirectMessageEmptyBucket(recipientId) {
+    async sendDirectMessageEmptyBucket(recipientId) {
         var client = new Twitter({
             subdomain: "api",
             consumer_key: this.consumerKey,
@@ -18,8 +18,7 @@ module.exports = class TwitterApi {
             access_token_secret: this.tokenSecret
         });
 
-        client.get("account/verify_credentials")
-            .catch(console.error);
+        await client.get("account/verify_credentials").catch(console.error);
 
         var raw = {
             "event": {
@@ -35,8 +34,6 @@ module.exports = class TwitterApi {
             }
         };
 
-        client.post("direct_messages/events/new", raw)
-            .then(results => { console.log("results", results); })
-            .catch(console.error);
+        return await client.post("direct_messages/events/new", raw);
     }
 };
