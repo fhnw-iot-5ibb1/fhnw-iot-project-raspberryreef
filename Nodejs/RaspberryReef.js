@@ -18,8 +18,8 @@ var ledLamp_Right = new Relay(23, 'field7');
 var refillPump = new Relay(24, 'field8');
 
 var initialDate = new Date();
-var initialSunrise = new Date(initialDate.getFullYear, initialDate.getMonth, 10, 0, 0, 0);
-var initialSunset = new Date(initialDate.getFullYear, initialDate.getMonth, 22, 0, 0, 0);
+var initialSunrise = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 10, 0, 0);
+var initialSunset = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 22, 0, 0);
 var ledLightManager = new LightManager(initialSunrise, null, null, initialSunset);
 
 setInterval(() => handleLights(), 60000);             // Check the light every minute
