@@ -22,9 +22,12 @@ var initialSunrise = new Date(initialDate.getFullYear(), initialDate.getMonth(),
 var initialSunset = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 22, 0, 0);
 var ledLightManager = new LightManager(initialSunrise, null, null, initialSunset);
 
-handleLights();
-sendTempSensorData();
+console.log("Initialize all ThingSpeak fields.");
 var data = "";
+data += "&" + tempSensor_Ground.getThingSpeakField() + "=" + tempSensor_Ground.getTemp();
+data += "&" + tempSensor_Surface.getThingSpeakField() + "=" + tempSensor_Surface.getTemp();
+data += "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
+data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
 data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
 data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
 data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
@@ -33,12 +36,15 @@ data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevel
 thingSpeakApi.postFields(data)
     .then((response) => {
         console.log(response);
-        console.log('Refill sensor and actuator data was sent.');
+        console.log('Data was sent.');
     })
     .catch((error) => {
         console.error('Error:', error);
-        console.log('Refill sensor and actuator data could not be sent.');
+        console.log('Data could not be sent.');
     });
+
+handleLights();
+checkWaterLevel();
 
 setInterval(() => handleLights(), 60000);             // Check the light every minute
 setInterval(() => checkWaterLevel(), 300000);         // Check Reef Water Level every 5 Minutes. Refill if needed.
