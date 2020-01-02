@@ -18,8 +18,7 @@ module.exports = class TwitterApi {
             access_token_secret: this.tokenSecret
         });
 
-        client
-            .get("account/verify_credentials")
+        client.get("account/verify_credentials")
             .catch(console.error);
 
         var raw = {
@@ -36,11 +35,8 @@ module.exports = class TwitterApi {
             }
         };
 
-        client
-            .post("direct_messages/events/new", raw)
-            .then(results => {
-                console.log("results", results);
-            })
+        client.post("direct_messages/events/new", raw)
+            .then(results => { console.log("results", results); })
             .catch(console.error);
     }
 };
