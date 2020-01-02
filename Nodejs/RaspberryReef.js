@@ -7,7 +7,7 @@ const LightManager = require('./Timer/LightManager');
 var refillBucketEmpty = false;
 
 var thingSpeakApi = new ThingSpeakRestApi('https://api.thingspeak.com/update.json', '909274', 'BG3OF4PS64WT3GOB');
-var twitterApi = new TwitterApi("https://api.twitter.com/1.1/direct_messages/events/new.json", "TSR8o5gA1X6ZU5MMdgrdNrMvZ", "1125735237009510400-8QqpyyIXzZ5l5EL3XbFyAD4g8Gr373")
+var twitterApi = new TwitterApi("https://api.twitter.com/1.1/direct_messages/events/new.json", "TSR8o5gA1X6ZU5MMdgrdNrMvZ", "pHSMbNld16i2yTy3CKkewA6C4cNd4MgyqiLQQhaHSbWWq9W3uI", "1125735237009510400-8QqpyyIXzZ5l5EL3XbFyAD4g8Gr373", "OSMkf9hbVIbNHlkVlNxOKLYh5YWaqaYxmmWmobKbYXNTr");
 var tempSensor_Ground = new TempSensor('28-031622932eff', 3, 'field1');
 var tempSensor_Surface = new TempSensor('28-041621ea95ff', 3, 'field2');
 var waterLevelSensor_ReefMin = new WaterLevelSensor(17, 'field3');
