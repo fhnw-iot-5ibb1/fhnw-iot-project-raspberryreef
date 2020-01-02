@@ -10,7 +10,7 @@ module.exports = class TwitterApi {
     }
 
     sendDirectMessageEmptyBucket(recipientId) {
-        client = new Twitter({
+        var client = new Twitter({
             subdomain: "api",
             consumer_key: this.consumerKey,
             consumer_secret: this.consumerSecret,
