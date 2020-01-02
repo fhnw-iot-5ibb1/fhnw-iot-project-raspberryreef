@@ -35,7 +35,7 @@ function handleLights() {
         console.log('Going to turn on the left lamp.');
         ledLamp_Left.setStateActive();
         data += "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
-    } else if (!lightShouldBeOn && ledLamp_Left.getState != 0) {
+    } else if (!lightShouldBeOn && ledLamp_Left.getState() != 0) {
         console.log('Going to turn off the left lamp.');
         ledLamp_Left.setStateInactive();
         data += "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
@@ -45,7 +45,7 @@ function handleLights() {
         console.log('Going to turn on the right lamp.');
         ledLamp_Right.setStateActive();
         data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
-    } else if (!lightShouldBeOn && ledLamp_Right.getState != 0) {
+    } else if (!lightShouldBeOn && ledLamp_Right.getState() != 0) {
         console.log('Going to turn the right lamp.');
         ledLamp_Right.setStateInactive();
         data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
@@ -92,7 +92,7 @@ function startRefillProcess(refillInterval) {
 
     if (reefMax === 0 && refillMin === 0) {
         refillBucketEmpty = false;
-        if (refillPump.getState === 0) {
+        if (refillPump.getState() === 0) {
             console.log('Starting the refill process.');
             refillPump.setStateActive();
             data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
@@ -112,7 +112,7 @@ function startRefillProcess(refillInterval) {
         }
         clearInterval(refillInterval);
     } else {
-        if (refillPump.getState === 1) {
+        if (refillPump.getState() === 1) {
             console.log('Reef succsessfully refilled.');
             refillPump.setStateInactive();
             data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
