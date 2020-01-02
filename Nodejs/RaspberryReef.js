@@ -130,8 +130,8 @@ function startRefillProcess(refillInterval) {
     if (data != "") {
         thingSpeakApi.postFields(data)
             .then((response) => {
-                console.log('Refill sensor and actuator data was sent.');
                 console.log(response);
+                console.log('Refill sensor and actuator data was sent.');
             })
             .catch((error) => {
                 console.error('Error:', error);
