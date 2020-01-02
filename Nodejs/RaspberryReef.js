@@ -103,6 +103,17 @@ function checkWaterLevel() {
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
                 console.log('Refill bucket is empty! Send a tweet to the reef owner!');
+                var data = "";
+                data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+                thingSpeakApi.postFields(data)
+                    .then((response) => {
+                        console.log(response);
+                        console.log('Refill sensor and actuator data was sent.');
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        console.log('Refill sensor and actuator data could not be sent.');
+                    });
                 twitterApi.sendDirectMessageEmptyBucket(1125735237009510400)
                     .then(results => { console.log("results", results); })
                     .catch(console.error);
@@ -122,6 +133,18 @@ function startRefillProcess(refillInterval) {
             console.log('Starting the refill process.');
             refillPump.setStateActive();
             data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+            data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
+            data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
+            data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+            thingSpeakApi.postFields(data)
+                .then((response) => {
+                    console.log(response);
+                    console.log('Refill sensor and actuator data was sent.');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    console.log('Refill sensor and actuator data could not be sent.');
+                });
         }
     } else if (reefMax === 0 && refillMin === 1) {
         if (refillPump.getState() === 1) {
@@ -132,6 +155,15 @@ function startRefillProcess(refillInterval) {
                 data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
                 data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
                 data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+                thingSpeakApi.postFields(data)
+                    .then((response) => {
+                        console.log(response);
+                        console.log('Refill sensor and actuator data was sent.');
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        console.log('Refill sensor and actuator data could not be sent.');
+                    });
                 console.log('Refill bucket is empty! Send a tweet to the reef owner!');
                 twitterApi.sendDirectMessageEmptyBucket(1125735237009510400)
                     .then(results => { console.log("results", results); })
@@ -147,20 +179,17 @@ function startRefillProcess(refillInterval) {
             data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
             data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
             data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+            thingSpeakApi.postFields(data)
+                .then((response) => {
+                    console.log(response);
+                    console.log('Refill sensor and actuator data was sent.');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    console.log('Refill sensor and actuator data could not be sent.');
+                });
         }
         clearInterval(refillInterval);
-    }
-
-    if (data != "") {
-        thingSpeakApi.postFields(data)
-            .then((response) => {
-                console.log(response);
-                console.log('Refill sensor and actuator data was sent.');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                console.log('Refill sensor and actuator data could not be sent.');
-            });
     }
 }
 
