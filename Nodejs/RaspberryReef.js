@@ -4,7 +4,7 @@ const TempSensor = require('./Sensors/TempSensor');
 const WaterLevelSensor = require('./Sensors/WaterLevelSensor');
 const Relay = require('./Actuators/Relay');
 const LightManager = require('./Timer/LightManager');
-const refillBucketEmpty = false;
+var refillBucketEmpty = false;
 
 var thingSpeakApi = new ThingSpeakRestApi('https://api.thingspeak.com/update.json', '909274', 'BG3OF4PS64WT3GOB');
 var twitterApi = new TwitterApi("https://api.twitter.com/1.1/direct_messages/events/new.json", "TSR8o5gA1X6ZU5MMdgrdNrMvZ", "1125735237009510400-8QqpyyIXzZ5l5EL3XbFyAD4g8Gr373")
@@ -34,11 +34,11 @@ function handleLights() {
     if (lightShouldBeOn && ledLamp_Left.getState() != 1) {
         console.log('Going to turn on the left lamp.');
         ledLamp_Left.setStateActive();
-        data = + "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
+        data += "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
     } else if (!lightShouldBeOn && ledLamp_Left.getState != 0) {
         console.log('Going to turn off the left lamp.');
         ledLamp_Left.setStateInactive();
-        data = + "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
+        data += "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
     }
 
     if (lightShouldBeOn && ledLamp_Right.getState() != 1) {
@@ -48,7 +48,7 @@ function handleLights() {
     } else if (!lightShouldBeOn && ledLamp_Right.getState != 0) {
         console.log('Going to turn the right lamp.');
         ledLamp_Right.setStateInactive();
-        data = + "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
+        data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
     }
 
     if (data != null) {
@@ -95,17 +95,17 @@ function startRefillProcess(refillInterval) {
         if (refillPump.getState === 0) {
             console.log('Starting the refill process.');
             refillPump.setStateActive();
-            data = + "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+            data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
         }
     } else if (reefMax === 0 && refillMin === 1) {
         if (refillPump.getState() === 1) {
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
                 refillPump.setStateInactive();
-                data = + "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
-                data = + "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
-                data = + "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
-                data = + "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+                data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+                data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
+                data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
+                data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
                 console.log('Refill bucket is empty! Send a tweet to the reef owner!');
                 twitterApi.sendDirectMessageEmptyBucket(1125735237009510400);
             }
@@ -115,10 +115,10 @@ function startRefillProcess(refillInterval) {
         if (refillPump.getState === 1) {
             console.log('Reef succsessfully refilled.');
             refillPump.setStateInactive();
-            data = + "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
-            data = + "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
-            data = + "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
-            data = + "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+            data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+            data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
+            data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
+            data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
         }
         clearInterval(refillInterval);
     }
