@@ -22,6 +22,24 @@ var initialSunrise = new Date(initialDate.getFullYear(), initialDate.getMonth(),
 var initialSunset = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 22, 0, 0);
 var ledLightManager = new LightManager(initialSunrise, null, null, initialSunset);
 
+handleLights();
+sendTempSensorData();
+var data = "";
+data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
+data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
+data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+
+thingSpeakApi.postFields(data)
+    .then((response) => {
+        console.log(response);
+        console.log('Refill sensor and actuator data was sent.');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        console.log('Refill sensor and actuator data could not be sent.');
+    });
+
 setInterval(() => handleLights(), 60000);             // Check the light every minute
 setInterval(() => checkWaterLevel(), 300000);         // Check Reef Water Level every 5 Minutes. Refill if needed.
 setInterval(() => sendTempSensorData(), 300000);      // Update ThingSpeak Temp Fields every 5 Minutes.
