@@ -1,14 +1,28 @@
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const Twitter = require("twitter-lite");
 
 module.exports = class TwitterApi {
-    constructor(url, consumerKey, token) {
+    constructor(url, consumerKey, consumerSecret, tokenKey, tokenSecret) {
         this.url = url;
         this.consumerKey = consumerKey;
-        this.token = token;
+        this.consumerSecret = consumerSecret;
+        this.tokenKey = tokenKey;
+        this.tokenSecret = tokenSecret;
     }
 
     sendDirectMessageEmptyBucket(recipientId) {
-        var data = JSON.stringify({
+        client = new Twitter({
+            subdomain: "api",
+            consumer_key: this.consumerKey,
+            consumer_secret: this.consumerSecret,
+            access_token_key: this.tokenKey,
+            access_token_secret: this.tokenSecret
+        });
+
+        client
+            .get("account/verify_credentials")
+            .catch(console.error);
+
+        var raw = {
             "event": {
                 "type": "message_create",
                 "message_create": {
@@ -20,25 +34,13 @@ module.exports = class TwitterApi {
                     }
                 }
             }
-        });
+        };
 
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                console.log(this.responseText);
-            }
-        });
-
-        xhr.open("POST", "https://api.twitter.com/1.1/direct_messages/events/new.json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("Authorization", "OAuth oauth_consumer_key=\"TSR8o5gA1X6ZU5MMdgrdNrMvZ\",oauth_token=\"1125735237009510400-8QqpyyIXzZ5l5EL3XbFyAD4g8Gr373\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"1577785001\",oauth_nonce=\"lkZWE4VAv9F\",oauth_version=\"1.0\",oauth_signature=\"rCufRZZjySdoGdgRauU2nM6TbLk%3D\"");
-        xhr.setRequestHeader("User-Agent", "PostmanRuntime/7.20.1");
-        xhr.setRequestHeader("Accept", "*/*");
-        xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.setRequestHeader("Postman-Token", "01c4c201-26c0-401e-957f-e58d68083642,63392139-6265-4037-b5fa-1d1c81489830");
-        
-        xhr.send(data);
+        client
+            .post("direct_messages/events/new", raw)
+            .then(results => {
+                console.log("results", results);
+            })
+            .catch(console.error);
     }
 };

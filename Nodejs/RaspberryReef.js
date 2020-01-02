@@ -53,14 +53,14 @@ function handleLights() {
 
     if (data != "") {
         thingSpeakApi.postFields(data)
-        .then((response) => {
-            console.log('Lamp data was sent.');
-            console.log(response);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            console.log('Lamp data could not be sent.');
-        });
+            .then((response) => {
+                console.log('Lamp data was sent.');
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                console.log('Lamp data could not be sent.');
+            });
     }
 }
 
@@ -125,14 +125,14 @@ function startRefillProcess(refillInterval) {
 
     if (data != "") {
         thingSpeakApi.postFields(data)
-        .then((response) => {
-            console.log('Refill sensor and actuator data was sent.');
-            console.log(response);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            console.log('Refill sensor and actuator data could not be sent.');
-        });
+            .then((response) => {
+                console.log('Refill sensor and actuator data was sent.');
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                console.log('Refill sensor and actuator data could not be sent.');
+            });
     }
 }
 
