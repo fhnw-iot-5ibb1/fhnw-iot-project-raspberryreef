@@ -29,25 +29,38 @@ setInterval(() => sendTempSensorData(), 300000);      // Update ThingSpeak Temp 
 function handleLights() {
     var lightShouldBeOn = ledLightManager.getLightShouldBeOn();
     console.log('Should the lights be on? => ' + lightShouldBeOn);
+    var data = null;
 
     if (lightShouldBeOn && ledLamp_Left.getState() != 1) {
-        console.log('Turning on the left lamp.');
+        console.log('Going to turn on the left lamp.');
         ledLamp_Left.setStateActive();
-        thingSpeakApi.writeField(ledLamp_Left.getThingSpeakField(), ledLamp_Left.getState());
+        data = + "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
     } else if (!lightShouldBeOn && ledLamp_Left.getState != 0) {
-        console.log('Turning off the left lamp.');
+        console.log('Going to turn off the left lamp.');
         ledLamp_Left.setStateInactive();
-        thingSpeakApi.writeField(ledLamp_Left.getThingSpeakField(), ledLamp_Left.getState());
+        data = + "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
     }
 
     if (lightShouldBeOn && ledLamp_Right.getState() != 1) {
-        console.log('Turning on the right lamp.');
+        console.log('Going to turn on the right lamp.');
         ledLamp_Right.setStateActive();
-        thingSpeakApi.writeField(ledLamp_Right.getThingSpeakField(), ledLamp_Right.getState());
+        data = + "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
     } else if (!lightShouldBeOn && ledLamp_Right.getState != 0) {
-        console.log('Turning off the right lamp.');
+        console.log('Going to turn the right lamp.');
         ledLamp_Right.setStateInactive();
-        thingSpeakApi.writeField(ledLamp_Right.getThingSpeakField(), ledLamp_Right.getState());
+        data = + "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
+    }
+
+    if (data != null) {
+        thingSpeakApi.postFields(data)
+        .then((response) => {
+            console.log('Lamp data was sent.');
+            console.log(response);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            console.log('Lamp data could not be sent.');
+        });
     }
 }
 
@@ -65,7 +78,7 @@ function checkWaterLevel() {
         } else {
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
-                console.log('Refill bucket is empty! Send an email to the reef owner!');
+                console.log('Refill bucket is empty! Send a tweet to the reef owner!');
                 twitterApi.sendDirectMessageEmptyBucket(1125735237009510400);
             }
         }
@@ -75,24 +88,25 @@ function checkWaterLevel() {
 function startRefillProcess(refillInterval) {
     var reefMax = waterLevelSensor_ReefMax.getState();
     var refillMin = waterLevelSensor_RefillMin.getState();
+    var data = null;
 
     if (reefMax === 0 && refillMin === 0) {
         refillBucketEmpty = false;
         if (refillPump.getState === 0) {
             console.log('Starting the refill process.');
             refillPump.setStateActive();
-            thingSpeakApi.writeField(refillPump.getThingSpeakField(), refillPump.getState());
+            data = + "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
         }
     } else if (reefMax === 0 && refillMin === 1) {
         if (refillPump.getState() === 1) {
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
-                console.log('Refill bucket is empty! Send an email to the reef owner!');
                 refillPump.setStateInactive();
-                thingSpeakApi.writeField(refillPump.getThingSpeakField(), refillPump.getState());
-                thingSpeakApi.writeField(waterLevelSensor_ReefMin.getThingSpeakField(), waterLevelSensor_ReefMin.getState());
-                thingSpeakApi.writeField(waterLevelSensor_ReefMax.getThingSpeakField(), waterLevelSensor_ReefMax.getState());
-                thingSpeakApi.writeField(waterLevelSensor_RefillMin.getThingSpeakField(), waterLevelSensor_RefillMin.getState());
+                data = + "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+                data = + "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
+                data = + "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
+                data = + "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
+                console.log('Refill bucket is empty! Send a tweet to the reef owner!');
                 twitterApi.sendDirectMessageEmptyBucket(1125735237009510400);
             }
         }
@@ -101,18 +115,39 @@ function startRefillProcess(refillInterval) {
         if (refillPump.getState === 1) {
             console.log('Reef succsessfully refilled.');
             refillPump.setStateInactive();
-            thingSpeakApi.writeField(refillPump.getThingSpeakField(), refillPump.getState());
-            thingSpeakApi.writeField(waterLevelSensor_ReefMin.getThingSpeakField(), waterLevelSensor_ReefMin.getState());
-            thingSpeakApi.writeField(waterLevelSensor_ReefMax.getThingSpeakField(), waterLevelSensor_ReefMax.getState());
-            thingSpeakApi.writeField(waterLevelSensor_RefillMin.getThingSpeakField(), waterLevelSensor_RefillMin.getState());
+            data = + "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+            data = + "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
+            data = + "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
+            data = + "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
         }
         clearInterval(refillInterval);
+    }
+
+    if (data != null) {
+        thingSpeakApi.postFields(data)
+        .then((response) => {
+            console.log('Refill sensor and actuator data was sent.');
+            console.log(response);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            console.log('Refill sensor and actuator data could not be sent.');
+        });
     }
 }
 
 function sendTempSensorData() {
+    var data = "&" + tempSensor_Ground.getThingSpeakField() + "=" + tempSensor_Ground.getTemp() + "&"
+        + tempSensor_Surface.getThingSpeakField() + "=" + tempSensor_Surface.getTemp();
+
     console.log('Sending temp sensor data to Thingspeak.');
-    thingSpeakApi.writeField(tempSensor_Ground.getThingSpeakField(), tempSensor_Ground.getTemp());
-    thingSpeakApi.writeField(tempSensor_Surface.getThingSpeakField(), tempSensor_Surface.getTemp());
-    console.log('Temp sensor data was sent.');
+    thingSpeakApi.postFields(data)
+        .then((response) => {
+            console.log('Temp sensor data was sent.');
+            console.log(response);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            console.log('Temp sensor could not be sent.');
+        });
 }
