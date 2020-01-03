@@ -8,7 +8,7 @@ module.exports = class TempSensor {
 
     getTemp() {
         var value = this.sensor.readC(this.sensorId, this.roundingDigits);
-        console.log('Got temp value of sensor ' + this.sensorId + '. Value is ' + value + '.');
+        console.info('Got temp value of sensor ' + this.sensorId + '. Value is ' + value + '.');
         return value;
     }
 

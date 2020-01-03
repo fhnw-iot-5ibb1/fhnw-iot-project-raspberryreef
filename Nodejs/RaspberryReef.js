@@ -22,7 +22,9 @@ var initialSunrise = new Date(initialDate.getFullYear(), initialDate.getMonth(),
 var initialSunset = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 22, 0, 0);
 var ledLightManager = new LightManager(initialSunrise, null, null, initialSunset);
 
-console.log("Initialize all ThingSpeak fields.");
+thingSpeakApi.startPublishInterval();
+
+console.info("Initialize all ThingSpeak fields.");
 var data = "";
 data += "&" + tempSensor_Ground.getThingSpeakField() + "=" + tempSensor_Ground.getTemp();
 data += "&" + tempSensor_Surface.getThingSpeakField() + "=" + tempSensor_Surface.getTemp();
@@ -32,19 +34,9 @@ data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
 data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
 data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
 data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
-
-thingSpeakApi.postFields(data)
-    .then((response) => {
-        console.log(response);
-        console.log('Data was sent.');
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        console.log('Data could not be sent.');
-    });
+thingSpeakApi.addDataToRequestQueue(data);
 
 handleLights();
-checkWaterLevel();
 
 setInterval(() => handleLights(), 60000);             // Check the light every minute
 setInterval(() => checkWaterLevel(), 300000);         // Check Reef Water Level every 5 Minutes. Refill if needed.
@@ -52,7 +44,7 @@ setInterval(() => sendTempSensorData(), 300000);      // Update ThingSpeak Temp 
 
 function handleLights() {
     var lightShouldBeOn = ledLightManager.getLightShouldBeOn();
-    console.log('Should the lights be on? => ' + lightShouldBeOn);
+    console.info('Should the lights be on? => ' + lightShouldBeOn);
     var data = "";
 
     if (lightShouldBeOn && ledLamp_Left.getState() != 1) {
@@ -76,15 +68,7 @@ function handleLights() {
     }
 
     if (data != "") {
-        thingSpeakApi.postFields(data)
-            .then((response) => {
-                console.log('Lamp data was sent.');
-                console.log(response);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                console.log('Lamp data could not be sent.');
-            });
+        thingSpeakApi.addDataToRequestQueue(data);
     }
 }
 
@@ -102,18 +86,10 @@ function checkWaterLevel() {
         } else {
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
-                console.log('Refill bucket is empty! Send a tweet to the reef owner!');
+                console.warn('Refill bucket is empty! Send a tweet to the reef owner!');
                 var data = "";
                 data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
-                thingSpeakApi.postFields(data)
-                    .then((response) => {
-                        console.log(response);
-                        console.log('Refill sensor and actuator data was sent.');
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                        console.log('Refill sensor and actuator data could not be sent.');
-                    });
+                thingSpeakApi.addDataToRequestQueue(data);
                 twitterApi.sendDirectMessageEmptyBucket(1125735237009510400)
                     .then(results => { console.log("results", results); })
                     .catch(console.error);
@@ -136,15 +112,7 @@ function startRefillProcess(refillInterval) {
             data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
             data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
             data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
-            thingSpeakApi.postFields(data)
-                .then((response) => {
-                    console.log(response);
-                    console.log('Refill sensor and actuator data was sent.');
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    console.log('Refill sensor and actuator data could not be sent.');
-                });
+            thingSpeakApi.addDataToRequestQueue(data);
         }
     } else if (reefMax === 0 && refillMin === 1) {
         if (refillPump.getState() === 1) {
@@ -155,16 +123,8 @@ function startRefillProcess(refillInterval) {
                 data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
                 data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
                 data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
-                thingSpeakApi.postFields(data)
-                    .then((response) => {
-                        console.log(response);
-                        console.log('Refill sensor and actuator data was sent.');
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                        console.log('Refill sensor and actuator data could not be sent.');
-                    });
-                console.log('Refill bucket is empty! Send a tweet to the reef owner!');
+                thingSpeakApi.addDataToRequestQueue(data);
+                console.warn('Refill bucket is empty! Send a tweet to the reef owner!');
                 twitterApi.sendDirectMessageEmptyBucket(1125735237009510400)
                     .then(results => { console.log("results", results); })
                     .catch(console.error);
@@ -179,15 +139,7 @@ function startRefillProcess(refillInterval) {
             data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
             data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
             data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
-            thingSpeakApi.postFields(data)
-                .then((response) => {
-                    console.log(response);
-                    console.log('Refill sensor and actuator data was sent.');
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    console.log('Refill sensor and actuator data could not be sent.');
-                });
+            thingSpeakApi.addDataToRequestQueue(data);
         }
         clearInterval(refillInterval);
     }
@@ -196,15 +148,5 @@ function startRefillProcess(refillInterval) {
 function sendTempSensorData() {
     var data = "&" + tempSensor_Ground.getThingSpeakField() + "=" + tempSensor_Ground.getTemp() + "&"
         + tempSensor_Surface.getThingSpeakField() + "=" + tempSensor_Surface.getTemp();
-
-    console.log('Sending temp sensor data to Thingspeak.');
-    thingSpeakApi.postFields(data)
-        .then((response) => {
-            console.log('Temp sensor data was sent.');
-            console.log(response);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            console.log('Temp sensor could not be sent.');
-        });
+    thingSpeakApi.addDataToRequestQueue(data);
 }
