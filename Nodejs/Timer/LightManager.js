@@ -29,7 +29,7 @@ module.exports = class LightManager {
             return Math.floor((this.calculateReturnTime(this.afternoonPauseStart) - this.calculateReturnTime(this.sunrise)) / _MS_PER_HOUR) +
                 Math.floor((this.calculateReturnTime(this.sunset) - this.calculateReturnTime(this.afternoonPauseEnd)) / _MS_PER_HOUR);
         } else {
-            return Math.floor((this.calculateReturnTime(this.sunrise) - this.calculateReturnTime(this.sunset)) / _MS_PER_HOUR);
+            return Math.floor((this.calculateReturnTime(this.sunset)- this.calculateReturnTime(this.sunrise)) / _MS_PER_HOUR);
         }
     }
 
