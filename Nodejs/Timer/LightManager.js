@@ -7,15 +7,15 @@ module.exports = class LightManager {
     }
 
     getSunrise() {
-        return calculateReturnTime(this.sunrise);
+        return this.calculateReturnTime(this.sunrise);
     }
 
     getAfternoonPauseStart() {
-        return calculateReturnTime(this.afternoonPauseStart);
+        return this.calculateReturnTime(this.afternoonPauseStart);
     }
 
     getAfternoonPauseEnd() {
-        return calculateReturnTime(this.afternoonPauseEnd);
+        return this.calculateReturnTime(this.afternoonPauseEnd);
     }
 
     getSunset() {
@@ -26,10 +26,10 @@ module.exports = class LightManager {
         var _MS_PER_HOUR = 1000 * 60 * 60;
 
         if (this.hasPause()) {
-            return Math.floor((calculateReturnTime(this.sunrise) - calculateReturnTime(this.afternoonPauseStart)) / _MS_PER_HOUR) +
-                Math.floor((calculateReturnTime(this.afternoonPauseEnd) - calculateReturnTime(this.sunset)) / _MS_PER_HOUR);
+            return Math.floor((this.calculateReturnTime(this.afternoonPauseStart) - this.calculateReturnTime(this.sunrise)) / _MS_PER_HOUR) +
+                Math.floor((this.calculateReturnTime(this.sunset) - this.calculateReturnTime(this.afternoonPauseEnd)) / _MS_PER_HOUR);
         } else {
-            return Math.floor((calculateReturnTime(this.sunrise) - calculateReturnTime(this.sunset)) / _MS_PER_HOUR);
+            return Math.floor((this.calculateReturnTime(this.sunrise) - this.calculateReturnTime(this.sunset)) / _MS_PER_HOUR);
         }
     }
 
@@ -37,14 +37,14 @@ module.exports = class LightManager {
         var now = new Date();
 
         if (this.hasPause()) {
-            return now >= calculateReturnTime(this.sunrise) && now <= calculateReturnTime(this.afternoonPauseStart) || now >= calculateReturnTime(this.afternoonPauseEnd) && now <= calculateReturnTime(this.sunset);
+            return now >= this.calculateReturnTime(this.sunrise) && now <= this.calculateReturnTime(this.afternoonPauseStart) || now >= this.calculateReturnTime(this.afternoonPauseEnd) && now <= this.calculateReturnTime(this.sunset);
         } else {
-            return now >= calculateReturnTime(this.sunrise) && now <= calculateReturnTime(this.sunset);
+            return now >= this.calculateReturnTime(this.sunrise) && now <= this.calculateReturnTime(this.sunset);
         }
     }
 
     hasPause() {
-        return this.afternoonPauseStart == null;
+        return !this.afternoonPauseStart == null;
     }
 
     calculateReturnTime(date) {
