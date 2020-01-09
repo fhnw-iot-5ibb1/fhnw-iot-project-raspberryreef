@@ -37,9 +37,9 @@ module.exports = class LightManager {
         var now = new Date();
 
         if (this.hasPause()) {
-            return now >= this.sunrise && now <= this.afternoonPauseStart || now >= this.afternoonPauseEnd && now <= this.sunset;
+            return now >= calculateReturnTime(this.sunrise) && now <= calculateReturnTime(this.afternoonPauseStart) || now >= calculateReturnTime(this.afternoonPauseEnd) && now <= calculateReturnTime(this.sunset);
         } else {
-            return now >= this.sunrise && now <= this.sunset;
+            return now >= calculateReturnTime(this.sunrise) && now <= calculateReturnTime(this.sunset);
         }
     }
 
