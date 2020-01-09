@@ -22,27 +22,19 @@ var initialSunrise = new Date(initialDate.getFullYear(), initialDate.getMonth(),
 var initialSunset = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 22, 0, 0);
 var ledLightManager = new LightManager(initialSunrise, null, null, initialSunset);
 
+console.info("Starting ThingSpeak update interval.");
 thingSpeakApi.startPublishInterval();
 
 console.info("Initialize all ThingSpeak fields.");
-var data = "";
-data += "&" + tempSensor_Ground.getThingSpeakField() + "=" + tempSensor_Ground.getTemp();
-data += "&" + tempSensor_Surface.getThingSpeakField() + "=" + tempSensor_Surface.getTemp();
-data += "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
-data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
-data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
-data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
-data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
-data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
-thingSpeakApi.addDataToRequestQueue(data);
+setAllDataToThingSpeak();
 
-handleLights();
+console.log("Total time lights on in hours: " + ledLightManager.getTotalOnTime());
+lightLoop();
 
-setInterval(() => handleLights(), 60000);             // Check the light every minute
-setInterval(() => checkWaterLevel(), 300000);         // Check Reef Water Level every 5 Minutes. Refill if needed.
-setInterval(() => sendTempSensorData(), 300000);      // Update ThingSpeak Temp Fields every 5 Minutes.
+setInterval(() => lightLoop(), 60000);  // Check the light every minute
+setInterval(() => mainLoop(), 300000);  // Check Reef Water Level every 5 Minutes. Refill if needed.
 
-function handleLights() {
+function lightLoop() {
     var lightShouldBeOn = ledLightManager.getLightShouldBeOn();
     console.info('Should the lights be on? => ' + lightShouldBeOn);
     var data = "";
@@ -72,7 +64,8 @@ function handleLights() {
     }
 }
 
-function checkWaterLevel() {
+function mainLoop() {
+    setAllDataToThingSpeak();
     var reefMin = waterLevelSensor_ReefMin.getState();
 
     if (reefMin === 1) {
@@ -145,8 +138,16 @@ function startRefillProcess(refillInterval) {
     }
 }
 
-function sendTempSensorData() {
-    var data = "&" + tempSensor_Ground.getThingSpeakField() + "=" + tempSensor_Ground.getTemp() + "&"
-        + tempSensor_Surface.getThingSpeakField() + "=" + tempSensor_Surface.getTemp();
+function setAllDataToThingSpeak() {
+    console.log("Going to update ThingSpeak fields.")
+    var data = "";
+    data += "&" + tempSensor_Ground.getThingSpeakField() + "=" + tempSensor_Ground.getTemp();
+    data += "&" + tempSensor_Surface.getThingSpeakField() + "=" + tempSensor_Surface.getTemp();
+    data += "&" + ledLamp_Left.getThingSpeakField() + "=" + ledLamp_Left.getState();
+    data += "&" + ledLamp_Right.getThingSpeakField() + "=" + ledLamp_Right.getState();
+    data += "&" + refillPump.getThingSpeakField() + "=" + refillPump.getState();
+    data += "&" + waterLevelSensor_ReefMin.getThingSpeakField() + "=" + waterLevelSensor_ReefMin.getState();
+    data += "&" + waterLevelSensor_ReefMax.getThingSpeakField() + "=" + waterLevelSensor_ReefMax.getState();
+    data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
     thingSpeakApi.addDataToRequestQueue(data);
 }
