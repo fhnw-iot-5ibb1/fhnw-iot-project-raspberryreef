@@ -98,7 +98,7 @@ My Reef Aquarium.
 <img src="Images/Others/Aquarium.jpg" width="640"/>
 
 ### Hardware Wiring
-Since I wanted to use the GPIO pins of my Raspberry Pi directly and without a grove base hat I needed to wire all the sensors and actuators by myself. For prototyping I used jumper cables, wires and a breadboard. The wiring diagram below represents my prototype. It was created with the Fritzing tool.
+Since I wanted to use the GPIO pins of my Raspberry Pi directly and without a grove base hat I needed to wire all the sensors and actuators by myself. For prototyping I used jumper cables, wires and a breadboard. The wiring diagram below represents my prototype. It was created with the Fritzing tool. The wiring diagram can be found here: [Fritzing/RaspberryReef.fzz](Fritzing/RaspberryReef.fzz). It includes the pin numbers of the pins used for each sensor.
 
 <img src="Images/Others/Fritzing.jpg" width="640"/>
 
@@ -138,11 +138,22 @@ RaspberryReef is a prototype of a reef management system. It fulfils the followi
 * Switch on / off reef aquarium led according to the time of the day.
 * Automatically refill evaporated water.
 * Send a direct message on twitter if the refill bucket has not enouth water.
-* Display sensor and actuator data.
+* Display sensor and actuator data on ThingSpeak (https://thingspeak.com/channels/909274).
 
 #### Reference model
 
 #### Interface documentation
+RaspberryReef has two interfaces to the www. Both use https to send data either ThingSpeak or Twitter. Since Twitter authentication is quite complicated I used the twitter-lite Node.js library to get it done.
+
+HTTP API to write to ThingSpeak
+```
+$ curl -vX POST https://api.thingspeak.com/update.json --data 'api_key==WRITE_API_KEY&field1=TEMP_GROUND&field2=TEMP_SURFACE&field3=WATER_REEF_MIN&field4=WATER_REEF_MAX&field5=WATER_REFILL_MIN&field6=LAMP_LEFT_STATE&field7=LAMP_RIGHT_STATE&field8=REFILL_PUMP_STATE'
+```
+
+HTTP API to write to Twitter
+```
+curl --request POST --url https://api.twitter.com/1.1/direct_messages/events/new.json --header 'authorization: OAuth oauth_consumer_key="CONSUMER_KEY", oauth_nonce="AUTO_GENERATED_NONCE", oauth_signature="AUTO_GENERATED_SIGNATURE", oauth_signature_method="HMAC-SHA1", oauth_timestamp="AUTO_GENERATED_TIMESTAMP", oauth_token="USERS_ACCESS_TOKEN", oauth_version="1.0"' --header 'content-type: application/json' --data '{"event": {"type": "message_create", "message_create": {"target": {"recipient_id": "RECIPIENT_USER_ID"}, "message_data": {"text": MESSAGE_TEXT}}}}'
+```
 
 #### Issues
 During prototyping I faced the following issues:
