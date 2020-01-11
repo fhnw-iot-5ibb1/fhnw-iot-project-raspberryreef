@@ -16,11 +16,11 @@ This project is part of the [IoT Engineering](../../../fhnw-iot) course.
 ### Team members
 * @jonathan-baettig & @jbaettig, Jonathan James Bättig
 
-## Project Setup
+## Project setup
 ### Controller
 My device of choice is a Raspberry Pi 3 B+ which I already had at home but have never really used until now. It runs Raspbian Buster Lite with Node.js and several node libraries.
 
-#### Software Setup
+#### Software setup
 The following setup steps are required to successfully run RaspberryReef on a Raspberry Pi 3 B+.
 * Enable SSH
 * Enable Wi-Fi
@@ -102,7 +102,7 @@ Since I wanted to use the GPIO pins of my Raspberry Pi directly and without a gr
 
 <img src="Images/Others/Fritzing.jpg" width="640"/>
 
-Since my actual breadboard was smaller than the one I used in my Fritzing, the actual Device looks a little different.
+Since my actual breadboard was smaller than the one I used in my Fritzing, the actual Device looks a little different. However, each sensor and actuator is connected to the Pi equally.
 
 <img src="Images/Others/Device.jpg" width="640"/>
 
@@ -132,10 +132,25 @@ The entire source code of my project is committed to this repository. All code i
 4-slide PDF presentation
 * [Presentation/RaspberryReef.pdf](Presentation/RaspberryReef.pdf)
 
-1) Use-case of your project.
-2) Reference model of your project.
-3) Single slide interface documentation.
-4) Issues you faced, how you solved them.
+#### Use cases
+RaspberryReef is a prototype of a reef management system. It fulfils the following use cases:
+* Measure water temperature.
+* Switch on / off reef aquarium led according to the time of the day.
+* Automatically refill evaporated water.
+* Send a direct message on twitter if the refill bucket has not enouth water.
+* Display sensor and actuator data.
+
+#### Reference model
+
+#### Interface documentation
+
+#### Issues
+During prototyping I faced the following issues:
+* ThingSpeak only allows channel updates every 15 seconds. Therefore, I created a queue which stores the data that needs to be sent to ThingSpeak.
+* Wiring the Pi was not that easy. I needed to read a lot about pull-up and pull-down resistors and when to use them. A also needed to learn when to use which resistor size.
+* Since I wanted to work without the Grove base hat I needed to solder some wires which was completely new for me.
+* Since I did not want to drill any holes into my reef tank, I needed to find another way of attaching my water level sensors to the tank. I finally found the perfect climbs for this in the spare parts form another tank.
+* Sometimes RaspberryReef sent me direct messages on twitter because the application measured that there is not enough water in the refill bucket. However, when I checked the amount of water in the bucket everything was fine. It took me hours to find the problem. The running refill pump created a magnetic field which was strong enough to trigger the magnetic switch of the water level sensor. I was able to solve this issue by positioning the sensor directly on top of the pump.
 
 ### Live demo
 Working end-to-end prototype, "device to cloud", part of your 10' presentation.
