@@ -102,7 +102,7 @@ Since I wanted to use the GPIO pins of my Raspberry Pi directly and without a gr
 
 <img src="Images/Others/Fritzing.jpg" width="640"/>
 
-Since my actual breadboard was smaller than the one I used in my Fritzing, the actual Device looks a little different. However, each sensor and actuator is connected to the Pi equally.
+Since my breadboard was smaller than the one I used in my Fritzing, the actual Device looks a little different. However, each sensor and actuator is connected to the Pi equally. The exact same GPIO pins are used.
 
 <img src="Images/Others/Device.jpg" width="640"/>
 
@@ -142,6 +142,8 @@ RaspberryReef is a prototype of a reef management system. It fulfils the followi
 
 #### Reference model
 
+<img src="Images/Others/ReferenceModel.jpg" width="640"/>
+
 #### Interface documentation
 RaspberryReef has two interfaces to the www. Both use https to send data either ThingSpeak or Twitter. Since Twitter authentication is quite complicated I used the twitter-lite Node.js library to get it done.
 
@@ -162,6 +164,7 @@ During prototyping I faced the following issues:
 * Since I wanted to work without the Grove base hat I needed to solder some wires which was completely new for me.
 * Since I did not want to drill any holes into my reef tank, I needed to find another way of attaching my water level sensors to the tank. I finally found the perfect climbs for this in the spare parts form another tank.
 * Sometimes RaspberryReef sent me direct messages on twitter because the application measured that there is not enough water in the refill bucket. However, when I checked the amount of water in the bucket everything was fine. It took me hours to find the problem. The running refill pump created a magnetic field which was strong enough to trigger the magnetic switch of the water level sensor. I was able to solve this issue by positioning the sensor directly on top of the pump.
+* I struggled a lot with the twitter authentication. Twitter uses OAuth 1.0 and I somehow failed to get it working. My Postman request worked fine but I was not able to implement it in JS. I decided to use a library then.
 
 ### Live demo
 Working end-to-end prototype, "device to cloud", part of your 10' presentation.
