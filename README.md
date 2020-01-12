@@ -52,7 +52,7 @@ The following setup steps are required to successfully run RaspberryReef on a Ra
 
 ### Sensors
 Magnetic water level sensor. Activates when the floating ring has contact with the clamp.  
-https://de.aliexpress.com/item/32909017788.html?spm=a2g0s.9042311.0.0.2c124c4dlrpVlE
+https://de.aliexpress.com/item/32909017788.html
 
 <img src="Images/Sensors/WaterLevel.jpg" width="640"/>
 
@@ -112,6 +112,15 @@ The entire source code of my project is committed to this repository. All code i
 
 #### Main Application
 * [Nodejs/RaspberryReef.js](Nodejs/RaspberryReef.js)
+The entire configuraiton of RaspberryReef needs to be done in this file. The following lines of code may need to be changed:
+```
+// The UserId of the recipient of twitter direct messages
+var directMessageRecipient = TWITTER_USER_NUMBER;
+
+// Sunrise and sunset time.
+var initialSunrise = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), SUNRISE_HOUR, SUNRISE_MINUTE, 0);
+var initialSunset = new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), SUNSET_HOUR, SUNSET_MINUTE, 0);
+```
 
 #### Sensors
 * [Nodejs/Sensors/TempSensor.js](Nodejs/Sensors/TempSensor.js)

@@ -40,9 +40,10 @@ sendAllDataToThingSpeak();
 
 console.log("Total time lights on in hours: " + ledLightManager.getTotalOnTime());
 lightLoop();
+mainLoop();
 
-setInterval(() => lightLoop(), 60000);  // Check the light every minute
-setInterval(() => mainLoop(), 300000);  // Check Reef Water Level every 5 Minutes. Refill if needed.
+setInterval(() => lightLoop(), 30000);  // Check the light every 30 seconds
+setInterval(() => mainLoop(), 60000);   // Check Reef Water Level every minute. Refill if needed.
 
 function lightLoop() {
     var lightShouldBeOn = ledLightManager.getLightShouldBeOn();
