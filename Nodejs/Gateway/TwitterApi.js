@@ -9,6 +9,7 @@ module.exports = class TwitterApi {
         this.tokenSecret = tokenSecret;
     }
 
+    // send twitter dm to reef owner
     async sendDirectMessageEmptyBucket(recipientId) {
         var client = new Twitter({
             subdomain: "api",

@@ -8,10 +8,12 @@ module.exports = class ThingSpeakRestApi {
     this.queue = [];
   }
 
+  // adds data to the ThingSpeak queue
   addDataToRequestQueue(data) {
     this.queue.push(data);
   }
 
+  // start the update interval which sends data to ThingSpeak every 20 seconds if there is any
   startPublishInterval() {
     setInterval(() => {
       if (this.queue.length > 0) {
@@ -26,6 +28,7 @@ module.exports = class ThingSpeakRestApi {
     }, 20000);
   }
 
+  // post the values async
   async postFields(values) {
     var data = "api_key=" + this.writeKey + values;
 

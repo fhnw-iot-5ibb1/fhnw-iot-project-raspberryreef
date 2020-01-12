@@ -79,15 +79,15 @@ function mainLoop() {
     sendAllDataToThingSpeak();
     var reefMin = waterLevelSensor_ReefMin.getState();
 
-    if (reefMin === 1) {
+    if (reefMin === 1) { // minimal water level reached
         console.log('Reef needs to be refilled.');
         var refillMin = waterLevelSensor_RefillMin.getState();
 
-        if (refillMin === 0) {
+        if (refillMin === 0) { // refill bucket contains water -> start the refill process
             refillBucketEmpty = false;
             console.log('Refill bucket contains water. Start the refill process.');
             var refillInterval = setInterval(function () { startRefillProcess(refillInterval) }, 1000);
-        } else {
+        } else { // refill bucket is empty
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
                 console.warn('Refill bucket is empty! Send a tweet to the reef owner!');
@@ -107,7 +107,7 @@ function startRefillProcess(refillInterval) {
     var refillMin = waterLevelSensor_RefillMin.getState();
     var data = "";
 
-    if (reefMax === 0 && refillMin === 0) {
+    if (reefMax === 0 && refillMin === 0) { // reef is not full and refill bucket is not empty
         refillBucketEmpty = false;
         if (refillPump.getState() === 0) {
             console.log('Starting the refill process.');
@@ -118,7 +118,7 @@ function startRefillProcess(refillInterval) {
             data += "&" + waterLevelSensor_RefillMin.getThingSpeakField() + "=" + waterLevelSensor_RefillMin.getState();
             thingSpeakApi.addDataToRequestQueue(data);
         }
-    } else if (reefMax === 0 && refillMin === 1) {
+    } else if (reefMax === 0 && refillMin === 1) { // reef is not full but refill bucket is empty
         if (refillPump.getState() === 1) {
             if (!refillBucketEmpty) {
                 refillBucketEmpty = true;
@@ -135,7 +135,7 @@ function startRefillProcess(refillInterval) {
             }
         }
         clearInterval(refillInterval);
-    } else {
+    } else { // reef is full
         if (refillPump.getState() === 1) {
             console.log('Reef succsessfully refilled.');
             refillPump.setStateInactive();

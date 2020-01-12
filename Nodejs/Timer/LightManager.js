@@ -22,6 +22,7 @@ module.exports = class LightManager {
         return this.calculateReturnTime(this.sunset);
     }
 
+    // returns the configured amount of hours the lights are on
     getTotalOnTime() {
         var _MS_PER_HOUR = 1000 * 60 * 60;
 
@@ -33,6 +34,7 @@ module.exports = class LightManager {
         }
     }
 
+    // calculates if the lights should be on at the moment
     getLightShouldBeOn() {
         var now = new Date();
 
@@ -47,6 +49,7 @@ module.exports = class LightManager {
         return !this.afternoonPauseStart == null;
     }
 
+    // calculates the time of the day
     calculateReturnTime(date) {
         var now = new Date();
         return new Date(now.getFullYear(), now.getMonth(), now.getDate(), date.getHours(), date.getSeconds(), date.getMilliseconds())
