@@ -1,7 +1,5 @@
 # IoT Engineering
-## Project RaspberryReef
-
-<img src="Images/Others/RaspberryReef_Logo.png" width="360"/>
+## Project RaspberryReef<img align="right" src="Images/Others/RaspberryReef_Logo.png" width="360"/>
 
 RaspberryReef is a prototype of a reef management system. One of its purposes is to manage the refill process of a reef aquarium. Salt concentration is an important part of reefing. The right amount of salt in the water helps every reef to be stable and healthy which is essential for all fish, corals and sea anemones. Therefore, evaporated water needs to be refilled quickly. RaspberryReef can get this job done. Furthermore, temperature is measured every five minutes and published to the web. Another critical success factor of every reef aquarium is light. Most corals have bacteria on them which turn light into sugar. The sugar is then consumed by the coral. Light can be controlled by RaspberryReef, too. The whole application is written in JavaScript with Node.js and runs on a Raspberry Pi 3 B+. All measurements and other GPIO values are published to the web.
 
