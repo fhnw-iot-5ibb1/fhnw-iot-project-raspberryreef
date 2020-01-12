@@ -147,12 +147,12 @@ RaspberryReef is a prototype of a reef management system. It fulfils the followi
 #### Interface documentation
 RaspberryReef has two interfaces to the www. Both use https to send data either ThingSpeak or Twitter. Since Twitter authentication is quite complicated I used the twitter-lite Node.js library to get it done.
 
-HTTP API to write to ThingSpeak
+HTTP API to write ThingSpeak
 ```
 $ curl -vX POST https://api.thingspeak.com/update.json --data 'api_key==WRITE_API_KEY&field1=TEMP_GROUND&field2=TEMP_SURFACE&field3=WATER_REEF_MIN&field4=WATER_REEF_MAX&field5=WATER_REFILL_MIN&field6=LAMP_LEFT_STATE&field7=LAMP_RIGHT_STATE&field8=REFILL_PUMP_STATE'
 ```
 
-HTTP API to write to Twitter
+HTTP API to write Twitter DM
 ```
 curl --request POST --url https://api.twitter.com/1.1/direct_messages/events/new.json --header 'authorization: OAuth oauth_consumer_key="CONSUMER_KEY", oauth_nonce="AUTO_GENERATED_NONCE", oauth_signature="AUTO_GENERATED_SIGNATURE", oauth_signature_method="HMAC-SHA1", oauth_timestamp="AUTO_GENERATED_TIMESTAMP", oauth_token="USERS_ACCESS_TOKEN", oauth_version="1.0"' --header 'content-type: application/json' --data '{"event": {"type": "message_create", "message_create": {"target": {"recipient_id": "RECIPIENT_USER_ID"}, "message_data": {"text": MESSAGE_TEXT}}}}'
 ```
@@ -167,13 +167,12 @@ During prototyping I faced the following issues:
 * I struggled a lot with the twitter authentication. Twitter uses OAuth 1.0 and I somehow failed to get it working. My Postman request worked fine but I was not able to implement it in JS. I decided to use a library then.
 
 ### Live demo
-Working end-to-end prototype, "device to cloud", part of your 10' presentation.
-
-[https://MY_TEAM_PROJECT_DEMO_HOST:PORT/](https://MY_TEAM_PROJECT_DEMO_HOST:PORT/)
-
-1) Sensor input on a IoT device triggers an event.
-2) The event or measurement shows up online, in an app or Web client.
-3) The event triggers actuator output on the same or on a separate IoT device.
+#### Sensor input on a IoT device triggers an event.
+Water level sensor detects that there is not enough water in the bucket. The Raspberry Pi triggers the refill process.
+#### The event or measurement shows up online, in an app or Web client.
+Historical sensor and actuator values are published to the ThingSpeak channel of RaspberryReef. https://thingspeak.com/channels/909274
+#### The event triggers actuator output on the same or on a separate IoT device.
+The start of the refill process activates the relay actuator that controls the pump. After a few seconds the refill process stops because there is not enough water in the refill process and sends me a direct message on Twitter.
 
 ## Submission deadline
 Commit and push to (this) project repo before Demo Day, _13.01.2020, 00:00_.
