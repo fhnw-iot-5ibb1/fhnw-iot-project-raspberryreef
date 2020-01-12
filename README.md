@@ -58,7 +58,7 @@ https://de.aliexpress.com/item/32909017788.html
 
 <img src="Images/Sensors/WaterLevel.jpg" width="640"/>
 
-Water proof temperature sensor. Measures temperature in degree Celsius.  
+Waterproof temperature sensor. Measures temperature in degree Celsius.  
 https://de.aliexpress.com/item/33032061557.html
 
 <img src="Images/Sensors/Temp.jpg" width="640"/>
@@ -100,7 +100,7 @@ My Reef Aquarium.
 <img src="Images/Others/Aquarium.jpg" width="640"/>
 
 ### Hardware Wiring
-Since I wanted to use the GPIO pins of my Raspberry Pi directly and without a grove base hat I needed to wire all the sensors and actuators by myself. For prototyping I used jumper cables, wires and a breadboard. The wiring diagram below represents my prototype. It was created with the Fritzing tool. The wiring diagram can be found here: [Fritzing/RaspberryReef.fzz](Fritzing/RaspberryReef.fzz). It includes the pin numbers of the pins used for each sensor.
+Since I wanted to use the GPIO pins of my Raspberry Pi directly and without a grove base hat I needed to wire all the sensors and actuators by myself. For prototyping I used jumper cables, wires and a breadboard. The wiring diagram below represents my prototype. It was created with the Fritzing tool. The wiring diagram can be found here: [Fritzing/RaspberryReef.fzz](Fritzing/RaspberryReef.fzz). It includes the pin numbers of the pins used for each sensor and actuator.
 
 <img src="Images/Others/Fritzing.jpg" width="640"/>
 
@@ -115,7 +115,7 @@ The entire source code of my project is committed to this repository. All code i
 #### Main Application
 * [Nodejs/RaspberryReef.js](Nodejs/RaspberryReef.js)
 
-The entire configuraiton of RaspberryReef needs to be done in this file. The following lines of code may need to be changed:
+The configuraiton of RaspberryReef needs to be done in this file. The following lines of code may need to be changed:
 ```
 // The UserId of the recipient of twitter direct messages
 var directMessageRecipient = TWITTER_USER_NUMBER;
@@ -157,7 +157,7 @@ RaspberryReef is a prototype of a reef management system. It fulfils the followi
 <img src="Images/Others/ReferenceModel.jpg" width="640"/>
 
 #### Interface documentation
-RaspberryReef has two interfaces to the www. Both use https to send data either ThingSpeak or Twitter. Since Twitter authentication is quite complicated I used the twitter-lite Node.js library to get it done.
+RaspberryReef has two interfaces to the world wide web. Both use https to send data either to ThingSpeak or to Twitter. Since Twitter authentication is quite complicated I used the twitter-lite Node.js library to get it done.
 
 HTTP API to write ThingSpeak
 ```
